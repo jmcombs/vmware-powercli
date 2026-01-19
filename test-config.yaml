@@ -1,0 +1,11 @@
+schemaVersion: "2.0.0"
+
+commandTests:
+  - name: "Check if PowerCLI is installed"
+    command: "pwsh"
+    args: ["-Command", "Get-Module -Name VMware* -ListAvailable"]
+    expectedOutput: [".*VMware.*"]
+  - name: "Check if ESXi ImageBuilder is working"
+    command: "pwsh"
+    args: ["-Command", "Get-Command -Name Get-EsxImageProfile"]
+    expectedOutput: [".*Get-EsxImageProfile.*"]

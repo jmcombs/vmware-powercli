@@ -1,5 +1,5 @@
 FROM ubuntu:20.04 AS base
-LABEL Maintainer = "Jeremy Combs <jmcombs@me.com>"
+LABEL Maintainer="Jeremy Combs <jmcombs@me.com>"
 
 # Switching to non-interactive for cotainer build
 ENV DEBIAN_FRONTEND=noninteractive
@@ -100,21 +100,21 @@ RUN PS_MAJOR_VERSION=$(curl -Ls -o /dev/null -w %{url_effective} https://aka.ms/
     && rm ${PS_PACKAGE} \
     && echo /usr/bin/pwsh >> /etc/shells
 
-FROM msft-install as vmware-install-arm64
+FROM msft-install AS vmware-install-arm64
 
-ARG POWERCLIURL=https://vdc-download.vmware.com/vmwb-repository/dcr-public/02830330-d306-4111-9360-be16afb1d284/c7b98bc2-fcce-44f0-8700-efed2b6275aa/VMware-PowerCLI-13.0.0-20829139.zip
+# Copy VMware.PowerCLI module from local repository
+COPY VMware-PowerCLI-13.0.0-20829139.zip /tmp/VMware-PowerCLI-13.0.0-20829139.zip
 
-ADD ${POWERCLIURL} /tmp/vmware-powercli.zip
 RUN mkdir -p /usr/local/share/powershell/Modules \
-    && pwsh -Command Expand-Archive -Path /tmp/vmware-powercli.zip -DestinationPath /usr/local/share/powershell/Modules \
-    && rm /tmp/vmware-powercli.zip
+    && pwsh -Command Expand-Archive -Path /tmp/VMware-PowerCLI-13.0.0-20829139.zip -DestinationPath /usr/local/share/powershell/Modules \
+    && rm /tmp/VMware-PowerCLI-13.0.0-20829139.zip
 
-FROM msft-install as vmware-install-amd64
+FROM msft-install AS vmware-install-amd64
 
 # Install and setup VMware.PowerCLI PowerShell Module
 RUN pwsh -Command Install-Module -Name VMware.PowerCLI -Scope AllUsers -Repository PSGallery -Force -Verbose
 
-FROM vmware-install-${TARGETARCH} as vmware-install-common
+FROM vmware-install-${TARGETARCH} AS vmware-install-common
 
 ARG VMWARECEIP=false
 
@@ -123,7 +123,7 @@ USER $USERNAME
 
 # Python 3 for VMware PowerCLI
 # apt package(s): gcc, wget, python3, python3-dev, python3-distutils
-ADD --chown=${USER_UID}:${USER_GID} https://bootstrap.pypa.io/get-pip.py /tmp/
+ADD --chown=${USER_UID}:${USER_GID} https://bootstrap.pypa.io/pip/3.7/get-pip.py /tmp/
 ENV PATH=${PATH}:/home/$USERNAME/.local/bin
 RUN python3.7 /tmp/get-pip.py \
     && python3.7 -m pip install six psutil lxml pyopenssl \

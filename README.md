@@ -12,14 +12,14 @@ VMware's PowerCLI with PowerShell Core and Python for ImageBuilder Support in Li
 This container is based on Ubuntu 20.04, contains both `xorriso` and `mkisofs` packages (for repacking ISO images) and has the following software installed, per the [Compatibility Matrixes for VMware PowerCLI 13.1.0](https://vdc-repo.vmware.com/vmwb-repository/dcr-public/f479301e-3164-47bc-9584-89b84a1bf5ce/c4ea2d2f-bf6d-4c18-bb20-6c4782ac6576/powercli1310-compat-matrix.html) and [Compatibility Matrixes for VMware PowerCLI 13.0.0](https://developer.vmware.com/docs/17472//powercli1300-compat-matrix.html#install-prereq):
 
 - .NET Core 3.1 (which is now [End of Support](https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core))
-- PowerShell Core 7.2 LTS (Automated)
+- PowerShell Core 7 LTS (Automated)
 - Python 3.7 (via ["deadsnakes" team](https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa))
-- VMware PowerCLI 13.1.0 (for `x64`) or 13.0.0 (for `ARM64`)
+- Latest Version VMware PowerCLI (for `x64`) or 13.0.0 (for `ARM64`)
 
 **NOTE**:
 
 - Python is configured per requirements outlined in [Install and Configure Python on Linux](https://developer.vmware.com/docs/15315/powercli-user-s-guide/GUID-101A5D2A-6BEB-43B0-8328-3B2F9F80C628.html)
-- For `ARM64` (aka Apple Silicone) users, there is a bug in PowerCLI 13.1.0 with ImageBuilder and it will not run so, `ARM64` images contain PowerCLI 13.0.0. VMware states its due to one of their modules not being compiled for ARM and have provided no ETA on when they'll fix it. Until then, I am keeping PowerCLI 13.0.0 for ARM64 images.
+- For `ARM64` (aka Apple Silicone) users, there is a bug in PowerCLI 13.1.0, and above, with ImageBuilder and it will not run so, `ARM64` images contain PowerCLI 13.0.0. VMware states its due to one of their modules not being compiled for ARM and have provided no ETA on when they'll fix it. Until then, I am keeping PowerCLI 13.0.0 for `ARM64` images, which the ZIP file is in the root of this repository.
 
 ## How to Use
 
@@ -63,7 +63,7 @@ The following are instructions for
 #### **NOTE:** The example below:
 
 - Has the following VIBs:
-  - [Community Networking Driver for ESXi](https://flings.vmware.com/community-networking-driver-for-esxi)
+  - [Community Networking Driver for ESXi](https://community.broadcom.com/vmware-code/viewdocument/community-network-driver-for-esxi-d?CommunityKey=5d6496d1-215a-4ead-99e1-ff49b96deaf6&tab=librarydocuments) **NOTE:** This is an updated link (as of 2023-12-09) that no longer includes the URL to download the VIB. Thank Broadcom for that.
   - [Synology NFS Plug-in for VMware VAAI](https://kb.synology.com/en-us/DSM/tutorial/How_do_I_install_Synology_NFS_VAAI_Plug_in_on_an_ESXi_host)
 - Is using the `VMware-ESXi-7.0U3g-20328353-depot.zip` ESXi Offline Bundle
 - Cloned Image Profile is named `ESXi-7.0U3g-nuc12-syn`
